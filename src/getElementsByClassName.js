@@ -4,23 +4,15 @@
 // };
 
 // But in stead we're going to implement it from scratch:
-var getElementsByClassName = function (className) {
+var getElementsByClassName = function (className, node, results) {
   // your code here
-  var arr = [];
-  var node = document.body;
-  var recurse = function(hello){
-  	for (var i = 0 ; i < hello.childNodes.length ; i++) {
-  		if (hello.childNodes[i].nodeName !== "#text") {
-	  		var hello2 = hello.childNodes[i];
-	  		if (hello2.classList.contains(className)) {
-	  			arr.push(hello2);
-	  		}
-	  		if (hello2.childNodes.length > 0) {
-	  			recurse(hello2);
-	  		}
-  		}
-  	}
+  results = results || [];
+  node = node || document.body;
+  if(node.nodeName !== '#text' && node.classList.contains(className)){
+    results.push(node);
   }
-  recurse(node);
-  return arr;
+  for(var i = 0; i <node.childNodes.length; i++) {
+    getElementsByClassName(className, node.childNodes[i], results);
+  }
+  return results;
 };
